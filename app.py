@@ -69,16 +69,19 @@ def generate_frames():
                     mediapipe_drawing.DrawingSpec(color=(0, 255, 0), thickness=2)
                 )
                 
-                index_finger_tip = detected_hand.landmark[8]
+                finger_tips = [4, 8, 12, 16, 20]  
                 h, w, _ = mirrored_frame.shape
-                finger_x, finger_y = int(index_finger_tip.x * w), int(index_finger_tip.y * h)
                 
-                for note, (x_start, x_end) in key_regions.items():
-                    if (280 <= finger_y <= 430 and x_start <= finger_x <= x_end):
-                        current_time = time.time()
-                        if note not in last_played or (current_time - last_played[note]) > 0.5:
-                            notes[note].play()
-                            last_played[note] = current_time
+                for finger_tip_idx in finger_tips:
+                    finger_tip = detected_hand.landmark[finger_tip_idx]
+                    finger_x, finger_y = int(finger_tip.x * w), int(finger_tip.y * h)
+                    
+                    for note, (x_start, x_end) in key_regions.items():
+                        if (280 <= finger_y <= 430 and x_start <= finger_x <= x_end):
+                            current_time = time.time()
+                            if note not in last_played or (current_time - last_played[note]) > 0.5:
+                                notes[note].play()
+                                last_played[note] = current_time
         
         success, encoded_frame = cv2.imencode('.jpg', mirrored_frame)
         frame_bytes = encoded_frame.tobytes()
