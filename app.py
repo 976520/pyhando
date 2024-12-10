@@ -1,7 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
 import mediapipe as mp
-import numpy as np
 from pygame import mixer
 import time
 
@@ -16,7 +15,8 @@ notes = {
     'F': mixer.Sound('static/F4.mp3'),
     'G': mixer.Sound('static/G4.mp3'), 
     'A': mixer.Sound('static/A4.mp3'),
-    'B': mixer.Sound('static/B4.mp3')
+    'B': mixer.Sound('static/B4.mp3'),
+    'C\'': mixer.Sound('static/C5.mp3'),
 }
 
 key_regions = {
@@ -26,7 +26,8 @@ key_regions = {
     'F': (200, 250),
     'G': (250, 300),
     'A': (300, 350),
-    'B': (350, 400)
+    'B': (350, 400),
+    'C\'': (400, 450),
 }
 
 mediapipe_hands = mp.solutions.hands
